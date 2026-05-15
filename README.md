@@ -1,17 +1,26 @@
-# first_app
+# تطبيق الشكاوى البلدية - Flutter Mobile App
 
-A new Flutter project.
+تطبيق جوال يسمح للمواطنين بإرسال الشكاوى البلدية ومتابعتها، مع تصنيف تلقائي باستخدام الذكاء الاصطناعي.
 
-## Getting Started
+## التقنيات المستخدمة
 
-This project is a starting point for a Flutter application.
+- Flutter 3.x
+- Dart
+- HTTP package
+- API Integration
 
-A few resources to get you started if this is your first Flutter project:
+## الميزات
 
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
+- عرض قائمة الشكاوى
+- إرسال شكوى جديدة مع وصف
+- تصنيف تلقائي للشكوى من الخادم
+- تحديث القائمة (Pull to Refresh)
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## طريقة التثبيت والتشغيل
+
+```bash
+git clone https://github.com/ALYAMAMA-Z/complaints-app-flutter.git
+cd complaints-app-flutter
+flutter pub get
+flutter run
+```
