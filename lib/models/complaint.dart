@@ -1,4 +1,5 @@
-import 'package:flutter/material.dart'; 
+import 'package:flutter/material.dart';
+
 class Complaint {
   final int id;
   final String citizenName;
@@ -29,11 +30,17 @@ class Complaint {
       citizenName: json['citizen_name'] ?? '',
       description: json['description'] ?? '',
       category: json['category'] ?? '',
-      status: json['status']?? 'pending',
+      status: json['status'] ?? 'pending',
       image: json['image'],
-      latitude: json['latitude']?.toDouble(),
-      longitude: json['longitude']?.toDouble(),
-      createdAt: DateTime.parse(json['created_at'] ?? DateTime.now().toIso8601String()),
+      latitude: json['latitude'] != null
+          ? double.tryParse(json['latitude'].toString())
+          : null,
+      longitude: json['longitude'] != null
+          ? double.tryParse(json['longitude'].toString())
+          : null,
+      createdAt: json['created_at'] != null
+          ? DateTime.parse(json['created_at'])
+          : DateTime.now(),
     );
   }
 

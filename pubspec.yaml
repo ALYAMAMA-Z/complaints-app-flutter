@@ -34,12 +34,16 @@ dependencies:
   # للتعامل مع API
   http: ^1.1.0
 
-  # لعرض الصور من الرابط
   cached_network_image: ^3.3.0
-
-  # لاختيار الصور من المعرض أو الكاميرا
   image_picker: ^1.0.5
+  shared_preferences: ^2.2.2 # لتخزين Token محلياً
+  http_parser: ^4.0.0
 
+  flutter_map: ^6.1.0
+  flutter_map_tile_caching: 9.0.1
+  latlong2: ^0.9.0
+  path_provider: ^2.1.0
+  permission_handler: ^10.4.3
   # لعرض الخريطة لاحقاً
   # flutter_map: ^6.1.0
 

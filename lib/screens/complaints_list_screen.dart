@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import '../services/api_service.dart';
 import '../models/complaint.dart';
 import 'add_complaint_screen.dart';
+import 'map_screen.dart';
+import '../services/auth_service.dart';
+import 'login_screen.dart';
 
 class ComplaintsListScreen extends StatefulWidget {
   const ComplaintsListScreen({super.key});
@@ -45,6 +48,41 @@ class _ComplaintsListScreenState extends State<ComplaintsListScreen> {
     await _loadComplaints();
   }
 
+  Future<void> _logout() async {
+    // عرض رسالة تأكيد
+    final confirm = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('تسجيل خروج'),
+        content: const Text('هل أنت متأكد من تسجيل الخروج؟'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text('إلغاء'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, true),
+            child: const Text('تسجيل خروج'),
+          ),
+        ],
+      ),
+    );
+
+    if (confirm == true) {
+      final token = await AuthService.getToken();
+      if (token != null) {
+        await AuthService.logout(token);
+      }
+
+      if (mounted) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const LoginScreen()),
+        );
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,6 +91,13 @@ class _ComplaintsListScreenState extends State<ComplaintsListScreen> {
         backgroundColor: Colors.green[700],
         foregroundColor: Colors.white,
         centerTitle: true,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.logout),
+            onPressed: _logout,
+            tooltip: 'تسجيل خروج',
+          ),
+        ],
       ),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
@@ -162,6 +207,50 @@ class _ComplaintsListScreenState extends State<ComplaintsListScreen> {
                                   MaterialTapTargetSize.shrinkWrap,
                             ),
                           const SizedBox(height: 8),
+                          if (complaint.latitude != null &&
+                              complaint.longitude != null)
+                            Padding(
+                              padding: const EdgeInsets.only(top: 8),
+                              child: InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => MapScreen(
+                                        latitude: complaint.latitude!,
+                                        longitude: complaint.longitude!,
+                                        address: complaint.description,
+                                      ),
+                                    ),
+                                  );
+                                },
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 12,
+                                    vertical: 6,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: Colors.blue[50],
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                  child: const Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Icon(
+                                        Icons.map,
+                                        size: 16,
+                                        color: Colors.blue,
+                                      ),
+                                      SizedBox(width: 4),
+                                      Text(
+                                        'عرض الموقع على الخريطة',
+                                        style: TextStyle(fontSize: 12),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
                           // التاريخ
                           Text(
                             '${complaint.createdAt.year}-${complaint.createdAt.month}-${complaint.createdAt.day}',
